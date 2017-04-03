@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,9 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
     private boolean mEnableSpan = true;
     private boolean mEnableGridMargin = true;
     private int mSpanSize = DEFAULT_SPAN_SIZE;
+
+    // other
+    private WeakReference<Callback> mCallback;
 
     public AlbumView(@NonNull Context context) {
         this(context, null);
@@ -108,5 +112,16 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
         if (DEBUG) {
             Log.d(TAG, "onItemClick, position: " + position);
         }
+        final Callback cb = mCallback.get();
+        if (cb == null) return;
+        cb.onItemClick(position);
+    }
+
+    public void setCallback(Callback cb) {
+        mCallback = new WeakReference<>(cb);
+    }
+
+    public interface Callback {
+        void onItemClick(int position);
     }
 }

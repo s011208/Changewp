@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +13,10 @@ import android.view.View;
 import bj4.yhh.albumview.AlbumView;
 import bj4.yhh.changewp.utilities.Utility;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AlbumView.Callback {
+
+    private static final String TAG = "MainActivity";
+    private static final boolean DEBUG = true;
 
     private AlbumView mAlbumView;
 
@@ -23,15 +27,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         mAlbumView = (AlbumView) findViewById(R.id.album_view);
         mAlbumView.setEnableSpan(true)
                 .setEnableGridMargin(true)
@@ -39,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 .buildAlbumView();
 
         mAlbumView.setImageDataList(Utility.getAllExternalStorageImageData(MainActivity.this));
+        mAlbumView.setCallback(this);
     }
 
     @Override
@@ -61,5 +57,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        if (DEBUG) {
+            Log.d(TAG, "onItemClick, position: " + position);
+        }
     }
 }

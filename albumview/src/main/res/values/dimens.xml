@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="album_item_height">150dp</dimen>
-    <dimen name="album_item_loading_view_margin">50dp</dimen>
+    <dimen name="album_item_loading_view_margin">45dp</dimen>
     <dimen name="album_item_default_margin">6dp</dimen>
     <dimen name="album_item_bottom_indicator_bar_height">26dp</dimen>
     <dimen name="album_item_description_text_size">16sp</dimen>
