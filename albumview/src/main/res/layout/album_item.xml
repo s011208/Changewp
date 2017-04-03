@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_holder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_item_height" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_item_bottom_indicator_bar_height"
+        android:layout_alignParentBottom="true"
+        android:background="#90000000"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@+id/source_type_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/source_type_icon"
+            android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:maxLines="1"
+            android:textColor="#fff"
+            android:textSize="@dimen/album_item_description_text_size" />
+
+    </RelativeLayout>
+
+    <!-- keep below items at bottom -->
+
+    <ProgressBar
+        android:id="@+id/loading_view"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Small"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/album_item_loading_view_margin" />
+
+    <View
+        android:id="@+id/event_handler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/image_holder"
+        android:layout_alignBottom="@id/image_holder"
+        android:background="@drawable/album_item_click_ripple" />
+
+</RelativeLayout>
