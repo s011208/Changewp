@@ -1,16 +1,19 @@
 package bj4.yhh.changewp;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import bj4.yhh.albumview.AlbumView;
+import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.utilities.Utility;
 
 public class MainActivity extends AppCompatActivity implements AlbumView.Callback {
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements AlbumView.Callbac
 
     private AlbumView mAlbumView;
 
+    private Map<String, List<ImageData>> mExternalStorageImageDataMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,14 +32,32 @@ public class MainActivity extends AppCompatActivity implements AlbumView.Callbac
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mExternalStorageImageDataMap.clear();
+        mExternalStorageImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(MainActivity.this)));
+
         mAlbumView = (AlbumView) findViewById(R.id.album_view);
         mAlbumView.setEnableSpan(true)
                 .setEnableGridMargin(true)
                 .setSpanSize(2)
                 .buildAlbumView();
 
-        mAlbumView.setImageDataList(Utility.getAllExternalStorageImageData(MainActivity.this));
+        mAlbumView.setImageDataList(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
         mAlbumView.setCallback(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override

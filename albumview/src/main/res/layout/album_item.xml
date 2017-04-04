@@ -31,7 +31,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/source_type_icon"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:fontFamily="monospace"
             android:maxLines="1"
             android:textColor="#fff"

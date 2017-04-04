@@ -4,10 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.provider.MediaStore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import bj4.yhh.albumview.ImageData;
 
@@ -25,7 +29,9 @@ public class Utility {
             while (cursor.moveToNext()) {
                 cv.clear();
                 DatabaseUtils.cursorRowToContentValues(cursor, cv);
-                rtn.add(new ImageData(cv));
+                ImageData data = new ImageData(cv);
+                data.setSourceType(ImageData.SOURCE_TYPE_EXTERNAL_STORAGE);
+                rtn.add(data);
             }
             return rtn;
         } finally {
@@ -33,4 +39,35 @@ public class Utility {
         }
     }
 
+    public static Map<String, List<ImageData>> groupImageDataByFolder(List<ImageData> imageDataList) {
+        Map<String, List<ImageData>> rtn = new HashMap<>();
+        for (ImageData imageData : imageDataList) {
+            final String folderName = getFolderName(imageData.getDataPath());
+            List<ImageData> imageDatas = rtn.get(folderName);
+            if (imageDatas == null) {
+                imageDatas = new ArrayList<>();
+            }
+            imageDatas.add(imageData);
+            rtn.put(folderName, imageDatas);
+        }
+        return rtn;
+    }
+
+    private static String getFolderName(String path) {
+        List<String> pathSegments = Uri.parse(path).getPathSegments();
+        return pathSegments.get(pathSegments.size() - 2);
+    }
+
+    public static List<ImageData> getFirstImageDataFromGroup(Map<String, List<ImageData>> imageDataGroup) {
+        List<ImageData> rtn = new ArrayList<>();
+        Iterator<String> groupKeyIterator = imageDataGroup.keySet().iterator();
+        while (groupKeyIterator.hasNext()) {
+            final String key = groupKeyIterator.next();
+            List<ImageData> groupList = imageDataGroup.get(key);
+            ImageData imageData = groupList.get(0);
+            imageData.setDescription(key + "(" + groupList.size() + ")");
+            rtn.add(imageData);
+        }
+        return rtn;
+    }
 }
