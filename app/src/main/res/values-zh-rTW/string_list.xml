@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preference_change_wallpaper_interval_selection">
+        <item>10 秒鐘</item>
+        <item>30 秒鐘</item>
+        <item>1 分鐘</item>
+        <item>3 分鐘</item>
+        <item>5 分鐘</item>
+        <item>10 分鐘</item>
+        <item>30 分鐘</item>
+        <item>1 小時</item>
+        <item>6 小時</item>
+        <item>1 天</item>
+    </array>
+</resources>

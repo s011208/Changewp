@@ -5,4 +5,8 @@
 
     <string name="source_name_from_external_storage">"本機儲存空間"</string>
     <string name="source_name_from_google_Drive">"Google 雲端硬碟"</string>
+
+    <string name="main_preference_category_general">"一般設定"</string>
+    <string name="main_preference_change_wallpaper_interval">"更換桌布間隔"</string>
+
 </resources>

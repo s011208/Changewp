@@ -5,4 +5,7 @@
 
     <string name="source_name_from_external_storage">"External storage"</string>
     <string name="source_name_from_google_Drive">"Google drive"</string>
+    
+    <string name="main_preference_category_general">"General settings"</string>
+    <string name="main_preference_change_wallpaper_interval">"Change wallpaper interval"</string>
 </resources>

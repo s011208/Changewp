@@ -1,5 +1,6 @@
 package bj4.yhh.changewp.imagesource;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import bj4.yhh.changewp.R;
+import bj4.yhh.changewp.settings.main.MainPreferenceActivity;
 
 public class ImageSourceActivity extends AppCompatActivity implements ImageSourceAdapter.Callback {
 
@@ -58,6 +60,8 @@ public class ImageSourceActivity extends AppCompatActivity implements ImageSourc
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent preferenceIntent = new Intent(this, MainPreferenceActivity.class);
+            startActivity(preferenceIntent);
             return true;
         }
 
