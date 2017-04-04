@@ -1,1 +1,1 @@
-include ':app', ':albumview'
+include ':app', ':albumview', ':googledrivehelper'
