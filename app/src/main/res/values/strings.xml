@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Changewp</string>
+    <string name="image_source_activity_title">"Select image resource"</string>
     <string name="action_settings">Settings</string>
+
+    <string name="source_name_from_external_storage">"External storage"</string>
+    <string name="source_name_from_google_Drive">"Google drive"</string>
 </resources>

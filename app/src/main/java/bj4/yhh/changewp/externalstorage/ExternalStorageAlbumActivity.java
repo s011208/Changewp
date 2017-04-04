@@ -1,4 +1,4 @@
-package bj4.yhh.changewp;
+package bj4.yhh.changewp.externalstorage;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -24,20 +24,21 @@ import java.util.Map;
 
 import bj4.yhh.albumview.AlbumView;
 import bj4.yhh.albumview.ImageData;
+import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.utilities.Utility;
 import bj4.yhh.googledrivehelper.GoogleDriveWrapper;
 import bj4.yhh.googledrivehelper.QueryAllFoldersTask;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements AlbumView.Callback, QueryAllFoldersTask.Callback {
+public class ExternalStorageAlbumActivity extends AppCompatActivity implements AlbumView.Callback, QueryAllFoldersTask.Callback {
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ImageSourceActivity";
     private static final boolean DEBUG = true;
     private static final String PREF_ACCOUNT_NAME = "pref_accountName";
 
@@ -55,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements AlbumView.Callbac
         setSupportActionBar(toolbar);
 
         mExternalStorageImageDataMap.clear();
-        mExternalStorageImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(MainActivity.this)));
+        mExternalStorageImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(ExternalStorageAlbumActivity.this)));
 
-        mAlbumView = (AlbumView) findViewById(R.id.album_view);
+//        mAlbumView = (AlbumView) findViewById(R.id.album_view);
         mAlbumView.setEnableSpan(true)
                 .setEnableGridMargin(true)
                 .setSpanSize(2)
@@ -188,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements AlbumView.Callbac
         if (error != null) {
             if (error instanceof GooglePlayServicesAvailabilityIOException) {
                 mGoogleDriveWrapper.showGooglePlayServicesAvailabilityErrorDialog(
-                        MainActivity.this, REQUEST_GOOGLE_PLAY_SERVICES, ((GooglePlayServicesAvailabilityIOException) error)
+                        ExternalStorageAlbumActivity.this, REQUEST_GOOGLE_PLAY_SERVICES, ((GooglePlayServicesAvailabilityIOException) error)
                                 .getConnectionStatusCode());
             } else if (error instanceof UserRecoverableAuthIOException) {
                 startActivityForResult(
                         ((UserRecoverableAuthIOException) error).getIntent(),
-                        MainActivity.REQUEST_AUTHORIZATION);
+                        ExternalStorageAlbumActivity.REQUEST_AUTHORIZATION);
             } else {
                 Log.d(TAG, "The following error occurred:\n"
                         + error.getMessage());

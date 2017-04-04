@@ -65,6 +65,7 @@ public class QueryAllFoldersTask extends AsyncTask<Void, Void, FileList> {
             }
             String finalCondition = QUtility.generateQCondition(conditions);
             return mDriveService.files().list()
+                    .setOrderBy("folder")
                     .setQ(finalCondition)
                     .execute();
         } catch (Exception e) {
