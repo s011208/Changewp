@@ -11,6 +11,7 @@
     <string name="main_preference_category_other">"其他"</string>
     <string name="main_preference_version_code">"版本號碼"</string>
     <string name="main_preference_version_name">"版本名稱"</string>
+    <string name="main_preference_wallpaper_resource_folder">"桌布資料夾"</string>
 
     <string name="external_storage_activity_read_local_file_permission">"應用程式需要讀取本地的檔案權限"</string>
     <string name="permission_request_text">"需要取得權限"</string>

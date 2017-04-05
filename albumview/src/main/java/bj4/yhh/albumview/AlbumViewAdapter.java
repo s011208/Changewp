@@ -1,13 +1,11 @@
 package bj4.yhh.albumview;
 
 import android.content.Context;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -62,6 +60,16 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
                 cb.onItemClick(position);
             }
         });
+
+        eventHandler.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Callback cb = mCallback.get();
+                if (cb == null) return false;
+                cb.onItemLongClick(position);
+                return true;
+            }
+        });
         loadingView.setVisibility(View.VISIBLE);
         Glide.with(context).load(new File(imageData.getDataPath()))
                 .listener(new RequestListener<File, GlideDrawable>() {
@@ -114,5 +122,7 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
 
     interface Callback {
         void onItemClick(int position);
+
+        void onItemLongClick(int position);
     }
 }

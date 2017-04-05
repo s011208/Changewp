@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +40,10 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
     private static final int REQUEST_PERMISSION_ACTIVITY = 10002;
 
     private final Handler mHandler = new Handler();
-
+    private final Map<String, List<ImageData>> mExternalStorageImageDataMap = new HashMap<>();
+    private final List<ImageData> mAlbumViewDataList = new ArrayList<>();
     private TextView mRequestPermissionTextView;
-
     private AlbumView mAlbumView;
-    private Map<String, List<ImageData>> mExternalStorageImageDataMap = new HashMap<>();
-
     private final ContentObserver mImageProviderObserver = new ContentObserver(mHandler) {
         @Override
         public void onChange(boolean selfChange) {
@@ -120,7 +120,9 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
 
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE)
     private void updateAlbumViewDataList() {
-        Log.d(TAG, "updateAlbumViewDataList");
+        if (DEBUG) {
+            Log.d(TAG, "updateAlbumViewDataList");
+        }
         if (EasyPermissions.hasPermissions(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             mRequestPermissionTextView.setVisibility(View.INVISIBLE);
@@ -128,7 +130,9 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
 
             mExternalStorageImageDataMap.clear();
             mExternalStorageImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(ExternalStorageAlbumActivity.this)));
-            mAlbumView.setImageDataList(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
+            mAlbumViewDataList.clear();
+            mAlbumViewDataList.addAll(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
+            mAlbumView.setImageDataList(mAlbumViewDataList);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.external_storage_activity_read_local_file_permission),
                     REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -167,6 +171,16 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
         if (DEBUG) {
             Log.d(TAG, "onItemClick, position: " + position);
         }
+    }
+
+    @Override
+    public void onItemLongClick(int position) {
+        if (DEBUG) {
+            Log.d(TAG, "onItemLongClick, position: " + position);
+        }
+        final String imageDataPath = mAlbumViewDataList.get(position).getDataPath();
+        final String folderPath = imageDataPath.substring(0, imageDataPath.lastIndexOf(File.separator));
+        Snackbar.make(mAlbumView, folderPath, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

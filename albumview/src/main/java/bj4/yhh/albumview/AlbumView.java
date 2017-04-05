@@ -117,11 +117,22 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
         cb.onItemClick(position);
     }
 
+    @Override
+    public void onItemLongClick(int position) {
+        if (DEBUG) {
+            Log.d(TAG, "onItemLongClick, position: " + position);
+        }
+        final Callback cb = mCallback.get();
+        if (cb == null) return;
+        cb.onItemLongClick(position);
+    }
+
     public void setCallback(Callback cb) {
         mCallback = new WeakReference<>(cb);
     }
 
     public interface Callback {
         void onItemClick(int position);
+        void onItemLongClick(int position);
     }
 }

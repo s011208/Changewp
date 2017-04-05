@@ -185,6 +185,13 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
     }
 
     @Override
+    public void onItemLongClick(int position) {
+        if (DEBUG) {
+            Log.d(TAG, "onItemLongClick, position: " + position);
+        }
+    }
+
+    @Override
     public void onError(Exception error) {
         if (error != null) {
             if (error instanceof GooglePlayServicesAvailabilityIOException) {

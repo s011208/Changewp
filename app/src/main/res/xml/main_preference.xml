@@ -4,11 +4,14 @@
         <Preference
             android:key="CHANGE_WALLPAPER_INTERVAL"
             android:title="@string/main_preference_change_wallpaper_interval" />
+        <Preference
+            android:key="WALLPAPER_RESOURCE_FOLDER"
+            android:title="@string/main_preference_wallpaper_resource_folder" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/main_preference_category_other">
         <Preference
             android:key="VERSION_NAME"
-            android:title="@string/main_preference_version_name"/>
+            android:title="@string/main_preference_version_name" />
         <Preference
             android:key="VERSION_CODE"
             android:title="@string/main_preference_version_code" />

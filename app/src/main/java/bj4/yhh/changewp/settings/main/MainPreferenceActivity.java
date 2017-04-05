@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 
+import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.settings.AppCompatPreferenceActivity;
 import bj4.yhh.changewp.settings.DialogCallback;
@@ -58,7 +59,9 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
     public static class MyPreferenceFragment extends PreferenceFragment {
         private static final String PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL = "CHANGE_WALLPAPER_INTERVAL";
         private static final String PREFERENCE_KEY_VERSION_CODE = "VERSION_CODE";
-        private static final String PERFERENCE_KEY_VERSION_NAME = "VERSION_NAME";
+        private static final String PREFERENCE_KEY_VERSION_NAME = "VERSION_NAME";
+
+        private static final String PREFERENCE_KEY_WALLPAPER_RESOURCE_FOLDER = "WALLPAPER_RESOURCE_FOLDER";
 
         @Override
         public void onCreate(final Bundle savedInstanceState) {
@@ -66,6 +69,25 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
             addPreferencesFromResource(R.xml.main_preference);
             updateChangeWallpaperIntervalSummary();
             updateVersionInfo();
+            updateWallpaperResourceFolder();
+        }
+
+        private void updateWallpaperResourceFolder() {
+            Preference preference = findPreference(PREFERENCE_KEY_WALLPAPER_RESOURCE_FOLDER);
+            if (preference != null) {
+                final int sourceType = PreferenceHelper.getSharedPreference(getActivity()).getInt(PreferenceHelper.KEY_SOURCE_TYPE, -1);
+                if (sourceType == -1) return;
+                final String sourceFolder = PreferenceHelper.getSharedPreference(getActivity()).getString(PreferenceHelper.KEY_SOURCE_FOLDER, null);
+                if (ImageData.SOURCE_TYPE_EXTERNAL_STORAGE == sourceType) {
+                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_external_storage_text) + " - " + sourceFolder);
+                } else if (ImageData.SOURCE_TYPE_GOOGLE_DRIVE == sourceType) {
+                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_google_drive_text) + " - " + sourceFolder);
+                } else if (ImageData.SOURCE_TYPE_OTHER_CLOUD == sourceType) {
+                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_other_cloud_text) + " - " + sourceFolder);
+                } else {
+                    throw new RuntimeException("unexpected source type: " + sourceType);
+                }
+            }
         }
 
         private void updateChangeWallpaperIntervalSummary() {
@@ -87,7 +109,7 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
                     e.printStackTrace();
                 }
             }
-            preference = findPreference(PERFERENCE_KEY_VERSION_NAME);
+            preference = findPreference(PREFERENCE_KEY_VERSION_NAME);
             if (preference != null) {
                 try {
                     preference.setSummary(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);

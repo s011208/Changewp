@@ -10,6 +10,10 @@ import android.content.SharedPreferences;
 public class PreferenceHelper {
     public static final String KEY_CHANGE_WALLPAPER_INTERVAL = "key_change_wallpaper_interval";
 
+    public static final String KEY_SOURCE_TYPE = "key_source_type";
+    public static final String KEY_SOURCE_FOLDER = "key_source_folder";
+
+
     private static final String SHARED_PREFERENCE_KEY = "bj4.yhh.changewp.utilities.pref";
 
     private static SharedPreferences sSharedPreference;

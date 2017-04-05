@@ -7,7 +7,10 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,20 +45,21 @@ public class Utility {
     public static Map<String, List<ImageData>> groupImageDataByFolder(List<ImageData> imageDataList) {
         Map<String, List<ImageData>> rtn = new HashMap<>();
         for (ImageData imageData : imageDataList) {
-            final String folderName = getFolderName(imageData.getDataPath());
-            List<ImageData> imageDatas = rtn.get(folderName);
+            final String mapKey = imageData.getDataPath()
+                    .substring(0, imageData.getDataPath().lastIndexOf(File.separator));
+            List<ImageData> imageDatas = rtn.get(mapKey);
             if (imageDatas == null) {
                 imageDatas = new ArrayList<>();
             }
             imageDatas.add(imageData);
-            rtn.put(folderName, imageDatas);
+            rtn.put(mapKey, imageDatas);
         }
         return rtn;
     }
 
     private static String getFolderName(String path) {
-        List<String> pathSegments = Uri.parse(path).getPathSegments();
-        return pathSegments.get(pathSegments.size() - 2);
+        List<String> paths = Uri.parse(path).getPathSegments();
+        return paths.get(paths.size() - 2);
     }
 
     public static List<ImageData> getFirstImageDataFromGroup(Map<String, List<ImageData>> imageDataGroup) {
@@ -65,9 +69,17 @@ public class Utility {
             final String key = groupKeyIterator.next();
             List<ImageData> groupList = imageDataGroup.get(key);
             ImageData imageData = groupList.get(0);
-            imageData.setDescription(key + "(" + groupList.size() + ")");
+            imageData.setDescription(getFolderName(imageData.getDataPath()) + "(" + groupList.size() + ")");
             rtn.add(imageData);
         }
+        Collections.sort(rtn, new Comparator<ImageData>() {
+
+            @Override
+            public int compare(ImageData imageData1, ImageData imageData2) {
+                return getFolderName(imageData1.getDataPath()).compareTo(getFolderName(imageData2.getDataPath()));
+            }
+        });
+
         return rtn;
     }
 }
