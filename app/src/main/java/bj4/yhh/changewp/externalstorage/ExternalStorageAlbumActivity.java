@@ -36,6 +36,8 @@ public class ExternalStorageAlbumActivity extends AppCompatActivity implements A
         setContentView(R.layout.activity_external_storage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAlbumView = (AlbumView) findViewById(R.id.album_view);
         mAlbumView.setEnableSpan(true)
@@ -78,6 +80,9 @@ public class ExternalStorageAlbumActivity extends AppCompatActivity implements A
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == android.R.id.home) {
+            finish();
             return true;
         }
 

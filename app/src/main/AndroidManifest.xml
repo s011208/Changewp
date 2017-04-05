@@ -37,7 +37,7 @@
 
         <activity
             android:name=".externalstorage.ExternalStorageAlbumActivity"
-            android:label="@string/source_type_external_storage_text"
+            android:label="@string/source_name_from_external_storage"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
