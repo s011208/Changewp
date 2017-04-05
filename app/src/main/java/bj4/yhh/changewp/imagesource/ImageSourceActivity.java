@@ -12,6 +12,8 @@ import android.view.MenuItem;
 
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.settings.main.MainPreferenceActivity;
+import bj4.yhh.changewp.settings.main.WallpaperTimeInterval;
+import bj4.yhh.changewp.utilities.PreferenceHelper;
 
 public class ImageSourceActivity extends AppCompatActivity implements ImageSourceAdapter.Callback {
 
@@ -35,9 +37,18 @@ public class ImageSourceActivity extends AppCompatActivity implements ImageSourc
         mSourceRecyclerView.setAdapter(mImageSourceAdapter);
     }
 
+    private void showIntervalDialogIfNecessary() {
+        if (PreferenceHelper.getSharedPreference(this).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, -1) != -1) {
+            return;
+        }
+        WallpaperTimeInterval.DialogFragmentImp dialogFragmentImp = new WallpaperTimeInterval.DialogFragmentImp();
+        dialogFragmentImp.show(getFragmentManager(), WallpaperTimeInterval.DialogFragmentImp.class.getSimpleName());
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        showIntervalDialogIfNecessary();
     }
 
     @Override
