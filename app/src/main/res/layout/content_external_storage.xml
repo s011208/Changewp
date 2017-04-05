@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity"
     tools:showIn="@layout/activity_external_storage">
@@ -11,6 +12,25 @@
     <bj4.yhh.albumview.AlbumView
         android:id="@+id/album_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></bj4.yhh.albumview.AlbumView>
+        android:layout_height="match_parent"
+        android:visibility="invisible"></bj4.yhh.albumview.AlbumView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/permission_request_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/error_request_permission"
+            android:gravity="center"
+            android:text="@string/permission_request_text"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

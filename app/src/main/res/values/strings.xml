@@ -9,5 +9,6 @@
     <string name="main_preference_category_general">"General settings"</string>
     <string name="main_preference_change_wallpaper_interval">"Change wallpaper interval"</string>
 
-    <string name="external_storage_activity_read_loca_file_permission">"This app needs to access local files."</string>
+    <string name="external_storage_activity_read_local_file_permission">"This app needs to access local files."</string>
+    <string name="permission_request_text">"Need permissions"</string>
 </resources>
