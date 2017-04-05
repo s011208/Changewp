@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Changewp</string>
+    <string name="app_name">Change wallpaper</string>
     <string name="image_source_activity_title">"Select image resource"</string>
     <string name="action_settings">Settings</string>
 

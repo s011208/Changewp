@@ -27,6 +27,7 @@ public class ImageSourceActivity extends AppCompatActivity implements ImageSourc
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(R.string.image_source_activity_title);
 
         mSourceRecyclerView = (RecyclerView) findViewById(R.id.source_recycler_view);
         mSourceRecyclerView.setLayoutManager(new LinearLayoutManager(this));
