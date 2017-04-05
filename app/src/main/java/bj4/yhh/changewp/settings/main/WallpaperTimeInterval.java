@@ -61,20 +61,21 @@ public class WallpaperTimeInterval {
 
     public static class DialogFragmentImp extends DialogFragment {
 
+        private int mSelectedIndex;
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            int selection = ONE_MINUTE;
+            mSelectedIndex = ONE_MINUTE;
             Bundle bundle = getArguments();
             if (bundle != null) {
-                bundle.getInt(EXTRA_KEY_SELECTION, ONE_MINUTE);
+                mSelectedIndex = bundle.getInt(EXTRA_KEY_SELECTION, ONE_MINUTE);
             }
             return new AlertDialog.Builder(getActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                     .setTitle(R.string.main_preference_change_wallpaper_interval)
-                    .setSingleChoiceItems(R.array.preference_change_wallpaper_interval_selection, selection, new DialogInterface.OnClickListener() {
+                    .setSingleChoiceItems(R.array.preference_change_wallpaper_interval_selection, mSelectedIndex, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            PreferenceHelper.getSharedPreference(getActivity()).edit()
-                                    .putInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, i).commit();
+                            mSelectedIndex = i;
                             dismiss();
                         }
                     })
@@ -90,6 +91,8 @@ public class WallpaperTimeInterval {
         @Override
         public void onDismiss(DialogInterface dialog) {
             super.onDismiss(dialog);
+            PreferenceHelper.getSharedPreference(getActivity()).edit()
+                    .putInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, mSelectedIndex).commit();
             if (getActivity() instanceof DialogCallback) {
                 ((DialogCallback) getActivity()).onDismiss(DialogFragmentImp.this);
             }

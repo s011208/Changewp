@@ -80,6 +80,9 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
             if (PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL.equals(preferenceKey)) {
                 if (DEBUG) Log.d(TAG, "PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL");
                 WallpaperTimeInterval.DialogFragmentImp dialogFragment = new WallpaperTimeInterval.DialogFragmentImp();
+                Bundle argument = new Bundle();
+                argument.putInt(WallpaperTimeInterval.EXTRA_KEY_SELECTION, PreferenceHelper.getSharedPreference(getActivity()).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, WallpaperTimeInterval.ONE_MINUTE));
+                dialogFragment.setArguments(argument);
                 dialogFragment.show(getFragmentManager(), WallpaperTimeInterval.DialogFragmentImp.class.getSimpleName());
                 return true;
             }
