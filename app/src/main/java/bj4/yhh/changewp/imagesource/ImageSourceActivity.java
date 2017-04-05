@@ -10,13 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import bj4.yhh.changewp.BaseAppCompatActivity;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity;
 import bj4.yhh.changewp.settings.main.MainPreferenceActivity;
 import bj4.yhh.changewp.settings.main.WallpaperTimeInterval;
 import bj4.yhh.changewp.utilities.PreferenceHelper;
 
-public class ImageSourceActivity extends AppCompatActivity implements ImageSourceAdapter.Callback {
+public class ImageSourceActivity extends BaseAppCompatActivity implements ImageSourceAdapter.Callback {
 
     private static final String TAG = "ImageSourceActivity";
     private static final boolean DEBUG = true;
@@ -55,6 +56,11 @@ public class ImageSourceActivity extends AppCompatActivity implements ImageSourc
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public String getTag() {
+        return TAG;
     }
 
     @Override

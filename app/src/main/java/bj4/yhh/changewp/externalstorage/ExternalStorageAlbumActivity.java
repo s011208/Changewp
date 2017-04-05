@@ -23,12 +23,13 @@ import java.util.Map;
 
 import bj4.yhh.albumview.AlbumView;
 import bj4.yhh.albumview.ImageData;
+import bj4.yhh.changewp.BaseAppCompatActivity;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.utilities.Utility;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class ExternalStorageAlbumActivity extends AppCompatActivity implements AlbumView.Callback {
+public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implements AlbumView.Callback {
 
     private static final String TAG = "ESAlbumActivity";
     private static final boolean DEBUG = true;
@@ -110,6 +111,11 @@ public class ExternalStorageAlbumActivity extends AppCompatActivity implements A
     protected void onDestroy() {
         super.onDestroy();
         getContentResolver().unregisterContentObserver(mImageProviderObserver);
+    }
+
+    @Override
+    public String getTag() {
+        return TAG;
     }
 
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE)
