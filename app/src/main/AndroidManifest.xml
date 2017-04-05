@@ -35,6 +35,11 @@
             android:label="@string/action_settings"
             android:theme="@style/Theme.AppCompat" />
 
+        <activity
+            android:name=".externalstorage.ExternalStorageAlbumActivity"
+            android:label="@string/source_type_external_storage_text"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".wallpaper.scheduler.WallpaperJobService"
             android:exported="true"

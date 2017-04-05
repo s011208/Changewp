@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import bj4.yhh.changewp.R;
+import bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity;
 import bj4.yhh.changewp.settings.main.MainPreferenceActivity;
 import bj4.yhh.changewp.settings.main.WallpaperTimeInterval;
 import bj4.yhh.changewp.utilities.PreferenceHelper;
@@ -86,6 +87,8 @@ public class ImageSourceActivity extends AppCompatActivity implements ImageSourc
             Log.d(TAG, "imageSourceFrom: " + from);
         }
         if (ImageSourceAdapter.SOURCE_FROM_EXTERNAL_STORAGE == from) {
+            Intent startIntent = new Intent(this, ExternalStorageAlbumActivity.class);
+            startActivity(startIntent);
         } else if (ImageSourceAdapter.SOURCE_FROM_GOOGLE_DRIVE == from) {
         }
     }

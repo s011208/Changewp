@@ -9,4 +9,5 @@
     <string name="main_preference_category_general">"一般設定"</string>
     <string name="main_preference_change_wallpaper_interval">"更換桌布間隔"</string>
 
+    <string name="external_storage_activity_read_loca_file_permission">"應用程式需要讀取本地的檔案權限"</string>
 </resources>
