@@ -1,7 +1,10 @@
 package bj4.yhh.changewp.externalstorage;
 
 import android.Manifest;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,8 +30,19 @@ public class ExternalStorageAlbumActivity extends AppCompatActivity implements A
 
     private static final int REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE = 10001;
 
+    private final Handler mHandler = new Handler();
+
     private AlbumView mAlbumView;
     private Map<String, List<ImageData>> mExternalStorageImageDataMap = new HashMap<>();
+
+    private final ContentObserver mImageProviderObserver = new ContentObserver(mHandler) {
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            if (selfChange) return;
+            updateAlbumViewDataList();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +61,25 @@ public class ExternalStorageAlbumActivity extends AppCompatActivity implements A
 
         mAlbumView.setCallback(this);
 
+        getContentResolver().registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, mImageProviderObserver);
         updateAlbumViewDataList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateAlbumViewDataList();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(mImageProviderObserver);
     }
 
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE)
