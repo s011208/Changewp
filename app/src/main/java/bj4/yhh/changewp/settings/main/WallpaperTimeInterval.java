@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.SparseArray;
 
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.settings.DialogCallback;
@@ -28,6 +29,30 @@ public class WallpaperTimeInterval {
     public static final int ONE_HOUR = 7;
     public static final int SIX_HOUR = 8;
     public static final int ONE_DAY = 9;
+
+    private static final long SECOND = 1000;
+    private static final long MINUTE = 60 * SECOND;
+    private static final long HOUR = 60 * MINUTE;
+    private static final long DAY = 24 * HOUR;
+
+    private static final SparseArray<Long> INTERVAL_ARRAY = new SparseArray<>();
+
+    static {
+        INTERVAL_ARRAY.put(TEN_SECONDS, 10 * SECOND);
+        INTERVAL_ARRAY.put(THIRTY_SECONDS, 30 * SECOND);
+        INTERVAL_ARRAY.put(ONE_MINUTE, MINUTE);
+        INTERVAL_ARRAY.put(THREE_MINUTES, 3 * MINUTE);
+        INTERVAL_ARRAY.put(FIVE_MINUTES, 5 * MINUTE);
+        INTERVAL_ARRAY.put(TEN_MINUTES, 10 * MINUTE);
+        INTERVAL_ARRAY.put(THIRTY_MINUTES, 30 * MINUTE);
+        INTERVAL_ARRAY.put(ONE_HOUR, HOUR);
+        INTERVAL_ARRAY.put(SIX_HOUR, 6 * HOUR);
+        INTERVAL_ARRAY.put(ONE_DAY, DAY);
+    }
+
+    public static long getTimeInterval(Context context) {
+        return INTERVAL_ARRAY.get(PreferenceHelper.getSharedPreference(context).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, ONE_DAY));
+    }
 
     public static String getIntervalString(Context context, int index) {
         String[] items = context.getResources().getStringArray(R.array.preference_change_wallpaper_interval_selection);
