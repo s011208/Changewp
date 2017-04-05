@@ -5,4 +5,12 @@
             android:key="CHANGE_WALLPAPER_INTERVAL"
             android:title="@string/main_preference_change_wallpaper_interval" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/main_preference_category_other">
+        <Preference
+            android:key="VERSION_NAME"
+            android:title="@string/main_preference_version_name"/>
+        <Preference
+            android:key="VERSION_CODE"
+            android:title="@string/main_preference_version_code" />
+    </PreferenceCategory>
 </PreferenceScreen>

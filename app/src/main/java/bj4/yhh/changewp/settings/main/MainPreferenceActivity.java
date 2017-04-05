@@ -1,6 +1,7 @@
 package bj4.yhh.changewp.settings.main;
 
 import android.app.DialogFragment;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -56,12 +57,15 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
 
     public static class MyPreferenceFragment extends PreferenceFragment {
         private static final String PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL = "CHANGE_WALLPAPER_INTERVAL";
+        private static final String PREFERENCE_KEY_VERSION_CODE = "VERSION_CODE";
+        private static final String PERFERENCE_KEY_VERSION_NAME = "VERSION_NAME";
 
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.main_preference);
             updateChangeWallpaperIntervalSummary();
+            updateVersionInfo();
         }
 
         private void updateChangeWallpaperIntervalSummary() {
@@ -70,6 +74,25 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
                 int index = PreferenceHelper.getSharedPreference(getActivity()).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, -1);
                 if (index != -1) {
                     preference.setSummary(WallpaperTimeInterval.getIntervalString(getActivity(), index));
+                }
+            }
+        }
+
+        private void updateVersionInfo() {
+            Preference preference = findPreference(PREFERENCE_KEY_VERSION_CODE);
+            if (preference != null) {
+                try {
+                    preference.setSummary(String.valueOf(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            preference = findPreference(PERFERENCE_KEY_VERSION_NAME);
+            if (preference != null) {
+                try {
+                    preference.setSummary(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         }
