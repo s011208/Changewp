@@ -10,10 +10,10 @@
         android:layout_height="@dimen/album_item_height" />
 
     <RelativeLayout
+        android:id="@+id/selection_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/album_item_bottom_indicator_bar_height"
         android:layout_alignParentBottom="true"
-        android:background="#90000000"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
@@ -52,8 +52,8 @@
         android:id="@+id/event_handler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignTop="@id/image_holder"
         android:layout_alignBottom="@id/image_holder"
+        android:layout_alignTop="@id/image_holder"
         android:background="@drawable/album_item_click_ripple" />
 
 </RelativeLayout>

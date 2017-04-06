@@ -1,6 +1,7 @@
 package bj4.yhh.albumview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +30,7 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
     private final WeakReference<Context> mContext;
     private final WeakReference<Callback> mCallback;
     private final List<ImageData> mDataList = new ArrayList<>();
+    private final List<Integer> mSelectedItem = new ArrayList<>();
 
     public AlbumViewAdapter(Context context, Callback cb) {
         mContext = new WeakReference(context);
@@ -41,6 +44,20 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
         return new AlbumViewViewHolder(LayoutInflater.from(context).inflate(R.layout.album_item, null));
     }
 
+    public void setSelectedItems(List<Integer> positions) {
+        mSelectedItem.clear();
+        mSelectedItem.addAll(positions);
+    }
+
+    public void setSelectedItem(int position) {
+        if (mSelectedItem.contains(position)) mSelectedItem.remove(mSelectedItem.indexOf(position));
+        else mSelectedItem.add(position);
+    }
+
+    public List<Integer> getSelectedItems() {
+        return mSelectedItem;
+    }
+
     @Override
     public void onBindViewHolder(final AlbumViewViewHolder holder, final int position) {
         final Context context = mContext.get();
@@ -51,6 +68,7 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
         final ProgressBar loadingView = holder.getLoadingView();
         final ImageView iconSourceImageView = holder.getSourceTypeIcon();
         final TextView descriptionTextView = holder.getDescriptionTextView();
+        final RelativeLayout selectionBar = holder.getSelectionBar();
 
         eventHandler.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +122,8 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
         if (!TextUtils.isEmpty(imageData.getDescription())) {
             descriptionTextView.setText(imageData.getDescription());
         }
+
+        selectionBar.setBackgroundColor(mSelectedItem.contains(position) ? Color.argb(0x90, 0xff, 0x3e, 0xff) : Color.argb(0x90, 0x00, 0x00, 0x00));
     }
 
     @Override

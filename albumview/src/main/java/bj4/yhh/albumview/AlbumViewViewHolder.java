@@ -19,6 +19,7 @@ public class AlbumViewViewHolder extends RecyclerView.ViewHolder {
     private View mEventHandler;
     private ImageView mSourceTypeIcon;
     private TextView mDescription;
+    private RelativeLayout mSelectionBar;
 
     public AlbumViewViewHolder(View itemView) {
         super(itemView);
@@ -28,6 +29,7 @@ public class AlbumViewViewHolder extends RecyclerView.ViewHolder {
         mEventHandler = mContainer.findViewById(R.id.event_handler);
         mSourceTypeIcon = (ImageView) mContainer.findViewById(R.id.source_type_icon);
         mDescription = (TextView) mContainer.findViewById(R.id.item_description);
+        mSelectionBar = (RelativeLayout) mContainer.findViewById(R.id.selection_bar);
     }
 
     public TextView getDescriptionTextView() {
@@ -52,5 +54,9 @@ public class AlbumViewViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView getSourceTypeIcon() {
         return mSourceTypeIcon;
+    }
+
+    public RelativeLayout getSelectionBar() {
+        return mSelectionBar;
     }
 }

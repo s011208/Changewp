@@ -171,6 +171,7 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
         if (DEBUG) {
             Log.d(TAG, "onItemClick, position: " + position);
         }
+        mAlbumView.setSelection(position);
     }
 
     @Override

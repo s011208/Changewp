@@ -107,6 +107,20 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
         mAlbumViewAdapter.notifyDataSetChanged();
     }
 
+    public void setSelections(List<Integer> position) {
+        mAlbumViewAdapter.setSelectedItems(position);
+        mAlbumViewAdapter.notifyDataSetChanged();
+    }
+
+    public void setSelection(int position) {
+        mAlbumViewAdapter.setSelectedItem(position);
+        mAlbumViewAdapter.notifyDataSetChanged();
+    }
+
+    public List<Integer> getSelections() {
+        return mAlbumViewAdapter.getSelectedItems();
+    }
+
     @Override
     public void onItemClick(int position) {
         if (DEBUG) {
@@ -133,6 +147,7 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
 
     public interface Callback {
         void onItemClick(int position);
+
         void onItemLongClick(int position);
     }
 }
