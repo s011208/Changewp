@@ -21,6 +21,8 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
     private static final String TAG = "ImageSourceActivity";
     private static final boolean DEBUG = true;
 
+    private static final int REQUEST_EXTERNAL_STORAGE_ALBUM = 10000;
+
     private RecyclerView mSourceRecyclerView;
     private ImageSourceAdapter mImageSourceAdapter;
 
@@ -93,8 +95,18 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
         }
         if (ImageSourceAdapter.SOURCE_FROM_EXTERNAL_STORAGE == from) {
             Intent startIntent = new Intent(this, ExternalStorageAlbumActivity.class);
-            startActivity(startIntent);
+            startActivityForResult(startIntent, REQUEST_EXTERNAL_STORAGE_ALBUM);
         } else if (ImageSourceAdapter.SOURCE_FROM_GOOGLE_DRIVE == from) {
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EXTERNAL_STORAGE_ALBUM) {
+            if (resultCode == RESULT_OK) {
+                // TODO: 2017/4/6 handle result
+            }
         }
     }
 }
