@@ -22,8 +22,6 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
     private static final String TAG = "AlbumView";
     private static final boolean DEBUG = true;
 
-    private static final int DEFAULT_SPAN_SIZE = 2;
-
     // data list
     private final List<ImageData> mImageDataList = new ArrayList<>();
 
@@ -33,9 +31,9 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
     private ItemDecoration mItemDecoration;
 
     // config
-    private boolean mEnableSpan = true;
+    private boolean mEnableSpan = false;
     private boolean mEnableGridMargin = true;
-    private int mSpanSize = DEFAULT_SPAN_SIZE;
+    private int mSpanSize;
 
     // other
     private WeakReference<Callback> mCallback;
@@ -54,6 +52,7 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
     }
 
     private void init() {
+        mSpanSize = getResources().getInteger(R.integer.album_view_span_size);
         setBackgroundColor(Color.BLACK);
         setHasFixedSize(true);
         mItemDecoration = new MarginDecoration(getContext());
@@ -114,7 +113,7 @@ public class AlbumView extends RecyclerView implements AlbumViewAdapter.Callback
 
     public void setSelection(int position) {
         mAlbumViewAdapter.setSelectedItem(position);
-        mAlbumViewAdapter.notifyDataSetChanged();
+        mAlbumViewAdapter.notifyItemChanged(position);
     }
 
     public List<Integer> getSelections() {

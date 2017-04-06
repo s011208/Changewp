@@ -77,9 +77,8 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
         });
 
         mAlbumView = (AlbumView) findViewById(R.id.album_view);
-        mAlbumView.setEnableSpan(true)
+        mAlbumView.setEnableSpan(false)
                 .setEnableGridMargin(true)
-                .setSpanSize(2)
                 .buildAlbumView();
 
         mAlbumView.setCallback(this);
@@ -152,7 +151,7 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         if (id == R.id.action_ok) {
             Intent data = new Intent();

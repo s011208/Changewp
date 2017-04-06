@@ -32,9 +32,12 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
     private final List<ImageData> mDataList = new ArrayList<>();
     private final List<Integer> mSelectedItem = new ArrayList<>();
 
+    private int mMaximumItemSize;
+
     public AlbumViewAdapter(Context context, Callback cb) {
         mContext = new WeakReference(context);
         mCallback = new WeakReference<>(cb);
+        mMaximumItemSize = context.getResources().getDisplayMetrics().widthPixels / context.getResources().getInteger(R.integer.album_view_span_size);
     }
 
     @Override
@@ -44,11 +47,6 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
         return new AlbumViewViewHolder(LayoutInflater.from(context).inflate(R.layout.album_item, null));
     }
 
-    public void setSelectedItems(List<Integer> positions) {
-        mSelectedItem.clear();
-        mSelectedItem.addAll(positions);
-    }
-
     public void setSelectedItem(int position) {
         if (mSelectedItem.contains(position)) mSelectedItem.remove(mSelectedItem.indexOf(position));
         else mSelectedItem.add(position);
@@ -56,6 +54,11 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
 
     public List<Integer> getSelectedItems() {
         return mSelectedItem;
+    }
+
+    public void setSelectedItems(List<Integer> positions) {
+        mSelectedItem.clear();
+        mSelectedItem.addAll(positions);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class AlbumViewAdapter extends RecyclerView.Adapter<AlbumViewViewHolder> 
             }
         });
         loadingView.setVisibility(View.VISIBLE);
-        Glide.with(context).load(new File(imageData.getDataPath()))
+        Glide.with(context).load(new File(imageData.getDataPath())).override(mMaximumItemSize, mMaximumItemSize)
                 .listener(new RequestListener<File, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, File model, Target<GlideDrawable> target, boolean isFirstResource) {

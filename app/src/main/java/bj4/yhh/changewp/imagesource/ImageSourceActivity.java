@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import bj4.yhh.changewp.BaseAppCompatActivity;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity;
@@ -106,6 +108,10 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
         if (requestCode == REQUEST_EXTERNAL_STORAGE_ALBUM) {
             if (resultCode == RESULT_OK) {
                 // TODO: 2017/4/6 handle result
+                List<Integer> selection = data.getIntegerArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECTIONS);
+                for (Integer i : selection) {
+                    Log.e("QQQQ", "i: " + i);
+                }
             }
         }
     }
