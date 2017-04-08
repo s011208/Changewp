@@ -33,11 +33,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implements AlbumView.Callback {
 
+    public static final String EXTRA_SELECT_FOLDERS = "extra_select_folders";
     private static final String TAG = "ESAlbumActivity";
     private static final boolean DEBUG = true;
-
-    public static final String EXTRA_SELECTIONS = "extra_selections";
-
     private static final int REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE = 10001;
     private static final int REQUEST_PERMISSION_ACTIVITY = 10002;
 
@@ -155,7 +153,13 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
 
         if (id == R.id.action_ok) {
             Intent data = new Intent();
-            data.putIntegerArrayListExtra(EXTRA_SELECTIONS, (ArrayList<Integer>) mAlbumView.getSelections());
+            ArrayList<String> extra = new ArrayList<>();
+            for (Integer index : mAlbumView.getSelections()) {
+                final String folder = mAlbumViewDataList.get(index).getDataPath()
+                        .substring(0, mAlbumViewDataList.get(index).getDataPath().lastIndexOf(File.separator));
+                extra.add(folder);
+            }
+            data.putStringArrayListExtra(EXTRA_SELECT_FOLDERS, extra);
             setResult(RESULT_OK, data);
             finish();
             return true;

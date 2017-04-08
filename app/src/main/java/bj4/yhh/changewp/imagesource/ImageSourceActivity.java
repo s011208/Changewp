@@ -108,8 +108,8 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
         if (requestCode == REQUEST_EXTERNAL_STORAGE_ALBUM) {
             if (resultCode == RESULT_OK) {
                 // TODO: 2017/4/6 handle result
-                List<Integer> selection = data.getIntegerArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECTIONS);
-                for (Integer i : selection) {
+                List<String> selectFolders = data.getStringArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECT_FOLDERS);
+                for (String i : selectFolders) {
                     Log.e("QQQQ", "i: " + i);
                 }
             }
