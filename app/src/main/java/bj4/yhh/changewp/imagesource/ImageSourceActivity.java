@@ -43,7 +43,7 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
     }
 
     private void showIntervalDialogIfNecessary() {
-        if (PreferenceHelper.getSharedPreference(this).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, -1) != -1) {
+        if (PreferenceHelper.getWallpaperInterval(this, -1) != -1) {
             return;
         }
         WallpaperTimeInterval.DialogFragmentImp dialogFragmentImp = new WallpaperTimeInterval.DialogFragmentImp();
@@ -109,8 +109,7 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
             if (resultCode == RESULT_OK) {
                 // TODO: 2017/4/6 handle result
                 List<String> selectFolders = data.getStringArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECT_FOLDERS);
-                for (String i : selectFolders) {
-                    Log.e("QQQQ", "i: " + i);
+                for (String folder : selectFolders) {
                 }
             }
         }

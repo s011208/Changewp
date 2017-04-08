@@ -51,7 +51,7 @@ public class WallpaperTimeInterval {
     }
 
     public static long getTimeInterval(Context context) {
-        return INTERVAL_ARRAY.get(PreferenceHelper.getSharedPreference(context).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, ONE_DAY));
+        return INTERVAL_ARRAY.get(PreferenceHelper.getWallpaperInterval(context, ONE_DAY));
     }
 
     public static String getIntervalString(Context context, int index) {
@@ -91,8 +91,7 @@ public class WallpaperTimeInterval {
         @Override
         public void onDismiss(DialogInterface dialog) {
             super.onDismiss(dialog);
-            PreferenceHelper.getSharedPreference(getActivity()).edit()
-                    .putInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, mSelectedIndex).commit();
+            PreferenceHelper.setWallpaperInterval(getActivity(), mSelectedIndex);
             if (getActivity() instanceof DialogCallback) {
                 ((DialogCallback) getActivity()).onDismiss(DialogFragmentImp.this);
             }

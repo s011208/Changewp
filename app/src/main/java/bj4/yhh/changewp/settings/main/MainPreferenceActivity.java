@@ -75,15 +75,14 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
         private void updateWallpaperResourceFolder() {
             Preference preference = findPreference(PREFERENCE_KEY_WALLPAPER_RESOURCE_FOLDER);
             if (preference != null) {
-                final int sourceType = PreferenceHelper.getSharedPreference(getActivity()).getInt(PreferenceHelper.KEY_SOURCE_TYPE, -1);
+                final int sourceType = PreferenceHelper.getFolderSourceType(getActivity(), -1);
                 if (sourceType == -1) return;
-                final String sourceFolder = PreferenceHelper.getSharedPreference(getActivity()).getString(PreferenceHelper.KEY_SOURCE_FOLDER, null);
                 if (ImageData.SOURCE_TYPE_EXTERNAL_STORAGE == sourceType) {
-                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_external_storage_text) + " - " + sourceFolder);
+                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_external_storage_text));
                 } else if (ImageData.SOURCE_TYPE_GOOGLE_DRIVE == sourceType) {
-                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_google_drive_text) + " - " + sourceFolder);
+                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_google_drive_text));
                 } else if (ImageData.SOURCE_TYPE_OTHER_CLOUD == sourceType) {
-                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_other_cloud_text) + " - " + sourceFolder);
+                    preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_other_cloud_text));
                 } else {
                     throw new RuntimeException("unexpected source type: " + sourceType);
                 }
@@ -93,7 +92,7 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
         private void updateChangeWallpaperIntervalSummary() {
             Preference preference = findPreference(PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL);
             if (preference != null) {
-                int index = PreferenceHelper.getSharedPreference(getActivity()).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, -1);
+                int index = PreferenceHelper.getWallpaperInterval(getActivity(), -1);
                 if (index != -1) {
                     preference.setSummary(WallpaperTimeInterval.getIntervalString(getActivity(), index));
                 }
@@ -126,7 +125,7 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
                 if (DEBUG) Log.d(TAG, "PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL");
                 WallpaperTimeInterval.DialogFragmentImp dialogFragment = new WallpaperTimeInterval.DialogFragmentImp();
                 Bundle argument = new Bundle();
-                argument.putInt(WallpaperTimeInterval.EXTRA_KEY_SELECTION, PreferenceHelper.getSharedPreference(getActivity()).getInt(PreferenceHelper.KEY_CHANGE_WALLPAPER_INTERVAL, WallpaperTimeInterval.ONE_MINUTE));
+                argument.putInt(WallpaperTimeInterval.EXTRA_KEY_SELECTION, PreferenceHelper.getWallpaperInterval(getActivity(), WallpaperTimeInterval.ONE_MINUTE));
                 dialogFragment.setArguments(argument);
                 dialogFragment.show(getFragmentManager(), WallpaperTimeInterval.DialogFragmentImp.class.getSimpleName());
                 return true;
