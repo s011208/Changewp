@@ -14,6 +14,7 @@ import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.settings.AppCompatPreferenceActivity;
 import bj4.yhh.changewp.settings.DialogCallback;
+import bj4.yhh.changewp.settings.main.folderlist.FolderListDialogFragment;
 import bj4.yhh.changewp.utilities.PreferenceHelper;
 
 /**
@@ -60,7 +61,6 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
         private static final String PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL = "CHANGE_WALLPAPER_INTERVAL";
         private static final String PREFERENCE_KEY_VERSION_CODE = "VERSION_CODE";
         private static final String PREFERENCE_KEY_VERSION_NAME = "VERSION_NAME";
-
         private static final String PREFERENCE_KEY_WALLPAPER_RESOURCE_FOLDER = "WALLPAPER_RESOURCE_FOLDER";
 
         @Override
@@ -121,14 +121,17 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             final String preferenceKey = preference.getKey();
+            if (DEBUG) Log.d(TAG, "key: " + preferenceKey);
             if (PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL.equals(preferenceKey)) {
-                if (DEBUG) Log.d(TAG, "PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL");
                 WallpaperTimeInterval.DialogFragmentImp dialogFragment = new WallpaperTimeInterval.DialogFragmentImp();
                 Bundle argument = new Bundle();
                 argument.putInt(WallpaperTimeInterval.EXTRA_KEY_SELECTION, PreferenceHelper.getWallpaperInterval(getActivity(), WallpaperTimeInterval.ONE_MINUTE));
                 dialogFragment.setArguments(argument);
                 dialogFragment.show(getFragmentManager(), WallpaperTimeInterval.DialogFragmentImp.class.getSimpleName());
                 return true;
+            } else if (PREFERENCE_KEY_WALLPAPER_RESOURCE_FOLDER.endsWith(preferenceKey)) {
+                FolderListDialogFragment dialog = new FolderListDialogFragment();
+                dialog.show(getFragmentManager(), FolderListDialogFragment.class.getSimpleName());
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }

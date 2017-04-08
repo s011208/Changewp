@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.BaseAppCompatActivity;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity;
@@ -111,6 +112,8 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
                 List<String> selectFolders = data.getStringArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECT_FOLDERS);
                 for (String folder : selectFolders) {
                 }
+                PreferenceHelper.setFolderSourceType(this, ImageData.SOURCE_TYPE_EXTERNAL_STORAGE);
+                PreferenceHelper.setFolderList(this, selectFolders);
             }
         }
     }

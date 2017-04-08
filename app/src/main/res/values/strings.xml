@@ -12,6 +12,7 @@
     <string name="main_preference_version_code">"Version code"</string>
     <string name="main_preference_version_name">"Version name"</string>
     <string name="main_preference_wallpaper_resource_folder">"Wallpaper resource folder"</string>
+    <string name="folder_list_dialog_title">"Folder list"</string>
 
     <string name="external_storage_activity_read_local_file_permission">"This app needs to access local files."</string>
     <string name="permission_request_text">"Need permissions"</string>
