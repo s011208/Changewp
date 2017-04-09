@@ -16,4 +16,7 @@
 
     <string name="external_storage_activity_read_local_file_permission">"This app needs to access local files."</string>
     <string name="permission_request_text">"Need permissions"</string>
+
+    <string name="cancel_confirm_dialog_default_title">"Warning"</string>
+    <string name="cancel_confirm_dialog_default_message">"Are you sure to delete it"</string>
 </resources>

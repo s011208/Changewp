@@ -52,6 +52,12 @@ public class PreferenceHelper {
         return rtn;
     }
 
+    public static void removeFolderFromFolderList(Context context, String folder) {
+        Set<String> folderList = getSharedPreference(context).getStringSet(KEY_SOURCE_FOLDER, new HashSet<String>());
+        folderList.remove(folder);
+        getSharedPreference(context).edit().putStringSet(KEY_SOURCE_FOLDER, new HashSet<>(folderList)).commit();
+    }
+
     public static void setFolderList(Context context, List<String> values) {
         Set<String> setValue = new HashSet<>();
         setValue.addAll(values);

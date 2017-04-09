@@ -16,4 +16,7 @@
 
     <string name="external_storage_activity_read_local_file_permission">"應用程式需要讀取本地的檔案權限"</string>
     <string name="permission_request_text">"需要取得權限"</string>
+
+    <string name="cancel_confirm_dialog_default_title">"注意"</string>
+    <string name="cancel_confirm_dialog_default_message">"確定要刪除嗎"</string>
 </resources>

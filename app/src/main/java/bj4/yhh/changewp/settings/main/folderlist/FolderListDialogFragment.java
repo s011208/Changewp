@@ -21,7 +21,7 @@ public class FolderListDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Context context = getActivity();
         RecyclerView recyclerView = new RecyclerView(context);
-        FolderListAdapter folderListAdapter = new FolderListAdapter(context);
+        FolderListAdapter folderListAdapter = new FolderListAdapter(getActivity());
         recyclerView.setAdapter(folderListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
