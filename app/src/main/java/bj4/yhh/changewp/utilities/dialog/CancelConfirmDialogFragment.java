@@ -17,6 +17,7 @@ import bj4.yhh.changewp.R;
 public class CancelConfirmDialogFragment extends DialogFragment {
     public static final String EXTRA_TITLE = "title";
     public static final String EXTRA_MSG = "message";
+    public static final String EXTRA_THEME = "theme";
 
     public WeakReference<Callback> mCallback;
 
@@ -28,9 +29,11 @@ public class CancelConfirmDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         String title = null, message = null;
+        int theme = 0;
         if (arguments != null) {
             title = arguments.getString(EXTRA_TITLE);
             message = arguments.getString(EXTRA_MSG);
+            theme = arguments.getInt(EXTRA_THEME);
         }
 
         if (title == null) {
@@ -39,7 +42,10 @@ public class CancelConfirmDialogFragment extends DialogFragment {
         if (message == null) {
             message = getString(R.string.cancel_confirm_dialog_default_message);
         }
-        return new AlertDialog.Builder(getActivity())
+        if (theme == 0) {
+            theme = android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
+        }
+        return new AlertDialog.Builder(getActivity(), theme)
                 .setTitle(title).setMessage(message)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

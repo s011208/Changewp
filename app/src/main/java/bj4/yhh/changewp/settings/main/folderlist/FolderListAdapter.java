@@ -21,12 +21,14 @@ import bj4.yhh.changewp.utilities.dialog.CancelConfirmDialogFragment;
 
 public class FolderListAdapter extends RecyclerView.Adapter<FolderListViewHolder> implements CancelConfirmDialogFragment.Callback {
     private final WeakReference<Activity> mActivity;
+    private final WeakReference<Callback> mCallback;
     private final List<String> mData = new ArrayList<>();
     private int mSelectedPosition = -1;
 
-    public FolderListAdapter(Activity context) {
+    public FolderListAdapter(Activity context, Callback cb) {
         mActivity = new WeakReference<>(context);
         mData.addAll(PreferenceHelper.getFolderList(context));
+        mCallback = new WeakReference<>(cb);
     }
 
     @Override
@@ -64,11 +66,22 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListViewHolder
         if (context == null) return;
         PreferenceHelper.removeFolderFromFolderList(context, mData.get(mSelectedPosition));
         mData.remove(mSelectedPosition);
-        notifyItemRemoved(mSelectedPosition);
+
+        Callback cb = mCallback.get();
+        if (mData.isEmpty() && cb != null) {
+            cb.onEmptyAdapter();
+        } else {
+            notifyItemRemoved(mSelectedPosition);
+            notifyItemRangeChanged(mSelectedPosition, getItemCount());
+        }
     }
 
     @Override
     public void onNegativeClick() {
         mSelectedPosition = -1;
+    }
+
+    public interface Callback {
+        void onEmptyAdapter();
     }
 }

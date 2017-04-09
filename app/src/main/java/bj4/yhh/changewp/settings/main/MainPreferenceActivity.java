@@ -4,11 +4,14 @@ import android.app.DialogFragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
+
+import java.util.List;
 
 import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.R;
@@ -54,10 +57,17 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
                 Log.d(TAG, "WallpaperTimeInterval.DialogFragmentImp onDismiss");
             }
             mMyPreferenceFragment.updateChangeWallpaperIntervalSummary();
+        } else if (instance instanceof FolderListDialogFragment) {
+            if (DEBUG) {
+                Log.d(TAG, "FolderListDialogFragment");
+            }
+            mMyPreferenceFragment.updateWallpaperResourceFolder();
         }
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {
+        private static final String PREFERENCE_KEY_CATEGORY_GENERAL_SETTIGNS = "CATEGORY_GENERAL_SETTINGS";
+
         private static final String PREFERENCE_KEY_CHANGE_WALLPAPER_INTERVAL = "CHANGE_WALLPAPER_INTERVAL";
         private static final String PREFERENCE_KEY_VERSION_CODE = "VERSION_CODE";
         private static final String PREFERENCE_KEY_VERSION_NAME = "VERSION_NAME";
@@ -76,6 +86,11 @@ public class MainPreferenceActivity extends AppCompatPreferenceActivity implemen
             Preference preference = findPreference(PREFERENCE_KEY_WALLPAPER_RESOURCE_FOLDER);
             if (preference != null) {
                 final int sourceType = PreferenceHelper.getFolderSourceType(getActivity(), -1);
+                final List<String> sourceFolders = PreferenceHelper.getFolderList(getActivity());
+                if (sourceFolders.isEmpty()) {
+                    ((PreferenceCategory) findPreference(PREFERENCE_KEY_CATEGORY_GENERAL_SETTIGNS)).removePreference(preference);
+                    return;
+                }
                 if (sourceType == -1) return;
                 if (ImageData.SOURCE_TYPE_EXTERNAL_STORAGE == sourceType) {
                     preference.setSummary(getString(bj4.yhh.albumview.R.string.source_type_external_storage_text));
