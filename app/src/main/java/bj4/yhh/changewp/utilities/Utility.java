@@ -45,8 +45,7 @@ public class Utility {
     public static Map<String, List<ImageData>> groupImageDataByFolder(List<ImageData> imageDataList) {
         Map<String, List<ImageData>> rtn = new HashMap<>();
         for (ImageData imageData : imageDataList) {
-            final String mapKey = imageData.getDataPath()
-                    .substring(0, imageData.getDataPath().lastIndexOf(File.separator));
+            final String mapKey = getFolderPath(imageData.getDataPath());
             List<ImageData> imageDatas = rtn.get(mapKey);
             if (imageDatas == null) {
                 imageDatas = new ArrayList<>();
@@ -57,7 +56,11 @@ public class Utility {
         return rtn;
     }
 
-    private static String getFolderName(String path) {
+    public static String getFolderPath(String path) {
+        return path.substring(0, path.lastIndexOf(File.separator));
+    }
+
+    public static String getFolderName(String path) {
         List<String> paths = Uri.parse(path).getPathSegments();
         return paths.get(paths.size() - 2);
     }

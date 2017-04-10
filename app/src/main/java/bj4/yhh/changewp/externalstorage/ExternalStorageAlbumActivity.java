@@ -27,6 +27,7 @@ import bj4.yhh.albumview.AlbumView;
 import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.BaseAppCompatActivity;
 import bj4.yhh.changewp.R;
+import bj4.yhh.changewp.utilities.PreferenceHelper;
 import bj4.yhh.changewp.utilities.Utility;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -132,6 +133,13 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
             mAlbumViewDataList.clear();
             mAlbumViewDataList.addAll(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
             mAlbumView.setImageDataList(mAlbumViewDataList);
+
+            List<String> selectedFolderList = PreferenceHelper.getFolderList(ExternalStorageAlbumActivity.this);
+            for (int i = 0; i < mAlbumViewDataList.size(); ++i) {
+                if (selectedFolderList.contains(Utility.getFolderPath(mAlbumViewDataList.get(i).getDataPath()))) {
+                    mAlbumView.setSelection(i);
+                }
+            }
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.external_storage_activity_read_local_file_permission),
                     REQUEST_PERMISSION_GET_READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -155,8 +163,7 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
             Intent data = new Intent();
             ArrayList<String> extra = new ArrayList<>();
             for (Integer index : mAlbumView.getSelections()) {
-                final String folder = mAlbumViewDataList.get(index).getDataPath()
-                        .substring(0, mAlbumViewDataList.get(index).getDataPath().lastIndexOf(File.separator));
+                final String folder = Utility.getFolderPath(mAlbumViewDataList.get(index).getDataPath());
                 extra.add(folder);
             }
             data.putStringArrayListExtra(EXTRA_SELECT_FOLDERS, extra);
@@ -185,7 +192,7 @@ public class ExternalStorageAlbumActivity extends BaseAppCompatActivity implemen
             Log.d(TAG, "onItemLongClick, position: " + position);
         }
         final String imageDataPath = mAlbumViewDataList.get(position).getDataPath();
-        final String folderPath = imageDataPath.substring(0, imageDataPath.lastIndexOf(File.separator));
+        final String folderPath = Utility.getFolderPath(imageDataPath);
         Snackbar.make(mAlbumView, folderPath, Snackbar.LENGTH_LONG).show();
     }
 
