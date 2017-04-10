@@ -108,10 +108,7 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_EXTERNAL_STORAGE_ALBUM) {
             if (resultCode == RESULT_OK) {
-                // TODO: 2017/4/6 handle result
                 List<String> selectFolders = data.getStringArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECT_FOLDERS);
-                for (String folder : selectFolders) {
-                }
                 PreferenceHelper.setFolderSourceType(this, ImageData.SOURCE_TYPE_EXTERNAL_STORAGE);
                 PreferenceHelper.setFolderList(this, selectFolders);
             }
