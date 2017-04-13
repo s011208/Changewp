@@ -10,10 +10,8 @@ import android.util.Log;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.utilities.PreferenceHelper;
@@ -53,19 +51,13 @@ public class ChangeWallpaperService extends IntentService {
             Log.d(TAG, "w: " + wallpaperManager.getDesiredMinimumWidth() + ", h: " + wallpaperManager.getDesiredMinimumHeight());
         }
 
-
         try {
             wallpaperManager.setWallpaperOffsetSteps(1, 1);
-            Bitmap bitmap = Glide.with(this).load(new File(nextWallpaperPath)).asBitmap().into(wallpaperManager.getDesiredMinimumWidth(), wallpaperManager.getDesiredMinimumHeight()).get();
+            Bitmap bitmap = Glide.with(this).load(new File(nextWallpaperPath)).asBitmap().into(getResources().getConfiguration().screenWidthDp, getResources().getConfiguration().screenHeightDp).get();
             wallpaperManager.suggestDesiredDimensions(bitmap.getWidth(), bitmap.getHeight());
             wallpaperManager.setBitmap(bitmap);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.w(TAG, "failed to set wallpaper", e);
         }
     }
 
@@ -80,7 +72,7 @@ public class ChangeWallpaperService extends IntentService {
             Log.w(TAG, "cannot find wallpaper");
             return null;
         }
-        final String rtn =  wallpaperQueue.remove(0);
+        final String rtn = wallpaperQueue.remove(0);
         PreferenceHelper.setWallpaperQueueList(this, wallpaperQueue);
 
         return rtn;
