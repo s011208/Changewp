@@ -15,6 +15,7 @@
     <string name="folder_list_dialog_title">"資料夾列表"</string>
 
     <string name="external_storage_activity_read_local_file_permission">"應用程式需要讀取本地的檔案權限"</string>
+    <string name="set_wall_paper_permission">"應用程式需要取得設定桌布的權限"</string>
     <string name="permission_request_text">"需要取得權限"</string>
 
     <string name="cancel_confirm_dialog_default_title">"注意"</string>

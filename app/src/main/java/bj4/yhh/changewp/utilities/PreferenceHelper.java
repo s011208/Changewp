@@ -13,10 +13,11 @@ import java.util.Set;
  */
 
 public class PreferenceHelper {
-    public static final String KEY_CHANGE_WALLPAPER_INTERVAL = "key_change_wallpaper_interval";
+    private static final String KEY_CHANGE_WALLPAPER_INTERVAL = "key_change_wallpaper_interval";
 
-    public static final String KEY_FOLDER_SOURCE_TYPE = "key_folder_source_type";
-    public static final String KEY_SOURCE_FOLDER = "key_source_folder";
+    private static final String KEY_FOLDER_SOURCE_TYPE = "key_folder_source_type";
+    private static final String KEY_SOURCE_FOLDER = "key_source_folder";
+    private static final String KEY_WALLPAPER_QUEUE_LIST = "key_wallpaper_file_path";
 
 
     private static final String SHARED_PREFERENCE_KEY = "bj4.yhh.changewp.utilities.pref";
@@ -47,20 +48,40 @@ public class PreferenceHelper {
     }
 
     public static List<String> getFolderList(Context context) {
-        List<String> rtn = new ArrayList<>();
-        rtn.addAll(getSharedPreference(context).getStringSet(KEY_SOURCE_FOLDER, new HashSet<String>()));
-        return rtn;
+        return getList(context, KEY_SOURCE_FOLDER);
     }
 
     public static void removeFolderFromFolderList(Context context, String folder) {
-        Set<String> folderList = getSharedPreference(context).getStringSet(KEY_SOURCE_FOLDER, new HashSet<String>());
-        folderList.remove(folder);
-        getSharedPreference(context).edit().putStringSet(KEY_SOURCE_FOLDER, new HashSet<>(folderList)).commit();
+        removeFromList(context, KEY_SOURCE_FOLDER, folder);
     }
 
     public static void setFolderList(Context context, List<String> values) {
+        setList(context, KEY_SOURCE_FOLDER, values);
+    }
+
+    public static List<String> getWallpaperQueueList(Context context) {
+        return getList(context, KEY_WALLPAPER_QUEUE_LIST);
+    }
+
+    public static void setWallpaperQueueList(Context context, List<String> items) {
+        setList(context, KEY_WALLPAPER_QUEUE_LIST, items);
+    }
+
+    public static List<String> getList(Context context, String key) {
+        List<String> rtn = new ArrayList<>();
+        rtn.addAll(getSharedPreference(context).getStringSet(key, new HashSet<String>()));
+        return rtn;
+    }
+
+    public static void removeFromList(Context context, String key, String item) {
+        Set<String> folderList = getSharedPreference(context).getStringSet(key, new HashSet<String>());
+        folderList.remove(item);
+        getSharedPreference(context).edit().putStringSet(item, new HashSet<>(folderList)).commit();
+    }
+
+    public static void setList(Context context, String key, List<String> values) {
         Set<String> setValue = new HashSet<>();
         setValue.addAll(values);
-        getSharedPreference(context).edit().putStringSet(KEY_SOURCE_FOLDER, setValue).commit();
+        getSharedPreference(context).edit().putStringSet(key, setValue).commit();
     }
 }

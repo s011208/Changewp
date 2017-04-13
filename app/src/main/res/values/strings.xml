@@ -15,6 +15,7 @@
     <string name="folder_list_dialog_title">"Folder list"</string>
 
     <string name="external_storage_activity_read_local_file_permission">"This app needs to access local files."</string>
+    <string name="set_wall_paper_permission">"This app needs to get set wallpaper permission!"</string>
     <string name="permission_request_text">"Need permissions"</string>
 
     <string name="cancel_confirm_dialog_default_title">"Warning"</string>

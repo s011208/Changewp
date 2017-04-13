@@ -1,5 +1,6 @@
 package bj4.yhh.changewp.imagesource;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bj4.yhh.albumview.ImageData;
@@ -18,6 +20,7 @@ import bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity;
 import bj4.yhh.changewp.settings.main.MainPreferenceActivity;
 import bj4.yhh.changewp.settings.main.WallpaperTimeInterval;
 import bj4.yhh.changewp.utilities.PreferenceHelper;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class ImageSourceActivity extends BaseAppCompatActivity implements ImageSourceAdapter.Callback {
 
@@ -25,6 +28,7 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
     private static final boolean DEBUG = true;
 
     private static final int REQUEST_EXTERNAL_STORAGE_ALBUM = 10000;
+    private static final int REQUEST_WALLPAPER_PERMISSION = 10001;
 
     private RecyclerView mSourceRecyclerView;
     private ImageSourceAdapter mImageSourceAdapter;
@@ -41,6 +45,12 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
         mSourceRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mImageSourceAdapter = new ImageSourceAdapter(this, this);
         mSourceRecyclerView.setAdapter(mImageSourceAdapter);
+
+        if (!EasyPermissions.hasPermissions(
+                this, Manifest.permission.SET_WALLPAPER, Manifest.permission.SET_WALLPAPER_HINTS)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.set_wall_paper_permission),
+                    REQUEST_WALLPAPER_PERMISSION, Manifest.permission.SET_WALLPAPER, Manifest.permission.SET_WALLPAPER_HINTS);
+        }
     }
 
     private void showIntervalDialogIfNecessary() {
@@ -109,6 +119,7 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
         if (requestCode == REQUEST_EXTERNAL_STORAGE_ALBUM) {
             if (resultCode == RESULT_OK) {
                 List<String> selectFolders = data.getStringArrayListExtra(ExternalStorageAlbumActivity.EXTRA_SELECT_FOLDERS);
+                PreferenceHelper.setWallpaperQueueList(this, new ArrayList<String>());
                 PreferenceHelper.setFolderSourceType(this, ImageData.SOURCE_TYPE_EXTERNAL_STORAGE);
                 PreferenceHelper.setFolderList(this, selectFolders);
             }
