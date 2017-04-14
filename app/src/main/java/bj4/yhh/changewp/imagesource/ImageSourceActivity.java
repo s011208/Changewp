@@ -17,6 +17,7 @@ import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.BaseAppCompatActivity;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.externalstorage.ExternalStorageAlbumActivity;
+import bj4.yhh.changewp.googledrive.GoogleDriveAlbumActivity;
 import bj4.yhh.changewp.settings.main.MainPreferenceActivity;
 import bj4.yhh.changewp.settings.main.WallpaperTimeInterval;
 import bj4.yhh.changewp.utilities.PreferenceHelper;
@@ -29,6 +30,7 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
 
     private static final int REQUEST_EXTERNAL_STORAGE_ALBUM = 10000;
     private static final int REQUEST_WALLPAPER_PERMISSION = 10001;
+    private static final int REQUEST_GOOGLE_DRIVE_ALBUM = 10002;
 
     private RecyclerView mSourceRecyclerView;
     private ImageSourceAdapter mImageSourceAdapter;
@@ -110,6 +112,8 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
             Intent startIntent = new Intent(this, ExternalStorageAlbumActivity.class);
             startActivityForResult(startIntent, REQUEST_EXTERNAL_STORAGE_ALBUM);
         } else if (ImageSourceAdapter.SOURCE_FROM_GOOGLE_DRIVE == from) {
+            Intent startIntent = new Intent(this, GoogleDriveAlbumActivity.class);
+            startActivityForResult(startIntent, REQUEST_GOOGLE_DRIVE_ALBUM);
         }
     }
 
@@ -122,6 +126,10 @@ public class ImageSourceActivity extends BaseAppCompatActivity implements ImageS
                 PreferenceHelper.setWallpaperQueueList(this, new ArrayList<String>());
                 PreferenceHelper.setFolderSourceType(this, ImageData.SOURCE_TYPE_EXTERNAL_STORAGE);
                 PreferenceHelper.setFolderList(this, selectFolders);
+            }
+        } else if (requestCode == REQUEST_GOOGLE_DRIVE_ALBUM) {
+            if (resultCode == RESULT_OK) {
+
             }
         }
     }
