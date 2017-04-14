@@ -30,7 +30,7 @@ public class WallpaperUtility {
                 .setTag(WallpaperJobService.JOB_CHANGE_WALLPAPER)
                 .setRecurring(true)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(0, (int) interval))
+                .setTrigger(Trigger.executionWindow((int) (interval / 1000), 1 + (int) (interval / 1000)))
                 .build();
 
         dispatcher.mustSchedule(job);
