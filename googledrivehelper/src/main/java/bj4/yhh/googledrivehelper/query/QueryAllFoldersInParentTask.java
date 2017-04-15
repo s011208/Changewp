@@ -1,15 +1,7 @@
 package bj4.yhh.googledrivehelper.query;
 
-import android.os.AsyncTask;
-
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,35 +12,10 @@ import bj4.yhh.googledrivehelper.QUtility;
  * Created by s011208 on 2017/4/4.
  */
 
-public class QueryAllFoldersInParentTask extends AsyncTask<Void, Void, FileList> {
-    public static final String DRIVE_FILE_ROOT = "root";
-
-    private String mDriveFolderId = DRIVE_FILE_ROOT;
-    private Drive mDriveService;
-    private Exception mLastError = null;
-    private WeakReference<GoogleDriveWrapper> mGoogleDriveWrapper;
-    private WeakReference<QueryCallback> mCallback;
-    private boolean mIncludeTrash = false;
-
-    public QueryAllFoldersInParentTask(GoogleDriveWrapper wrapper, QueryCallback cb) {
-        this(wrapper, cb, "Change wp");
-    }
+public class QueryAllFoldersInParentTask extends QueryTask {
 
     public QueryAllFoldersInParentTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
-        mCallback = new WeakReference<>(cb);
-        mGoogleDriveWrapper = new WeakReference<>(wrapper);
-
-        HttpTransport transport = AndroidHttp.newCompatibleTransport();
-        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-        mDriveService = new Drive.Builder(
-                transport, jsonFactory, mGoogleDriveWrapper.get().getCredential())
-                .setApplicationName(applicationNAme)
-                .build();
-    }
-
-    public QueryAllFoldersInParentTask queryTrash(boolean includeTrash) {
-        mIncludeTrash = includeTrash;
-        return this;
+        super(wrapper, cb, applicationNAme);
     }
 
     @Override
@@ -56,17 +23,17 @@ public class QueryAllFoldersInParentTask extends AsyncTask<Void, Void, FileList>
         try {
             List<String> conditions = new ArrayList<>();
             conditions.add("mimeType = 'application/vnd.google-apps.folder'");
-            conditions.add("'" + mDriveFolderId + "' in parents");
-            if (!mIncludeTrash) {
+            conditions.add("'" + getDriveFolderId() + "' in parents");
+            if (!getQueryTrash()) {
                 conditions.add("trashed = false");
             }
             String finalCondition = QUtility.generateQCondition(conditions);
-            return mDriveService.files().list()
+            return getDriveService().files().list()
                     .setOrderBy("folder")
                     .setQ(finalCondition)
                     .execute();
         } catch (Exception e) {
-            mLastError = e;
+            setLastException(e);
             cancel(true);
             return null;
         }
@@ -80,16 +47,16 @@ public class QueryAllFoldersInParentTask extends AsyncTask<Void, Void, FileList>
     @Override
     protected void onPostExecute(FileList fileList) {
         super.onPostExecute(fileList);
-        QueryCallback cb = mCallback.get();
+        QueryCallback cb = getCallback().get();
         if (cb == null) return;
         cb.onQueryResult(fileList);
     }
 
     @Override
     protected void onCancelled() {
-        QueryCallback cb = mCallback.get();
+        QueryCallback cb = getCallback().get();
         if (cb == null) return;
-        if (mLastError == null) return;
-        cb.onQueryError(mLastError);
+        if (getLastException() == null) return;
+        cb.onQueryError(getLastException());
     }
 }

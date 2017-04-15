@@ -26,8 +26,8 @@ import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.utilities.Utility;
 import bj4.yhh.googledrivehelper.GoogleDriveWrapper;
-import bj4.yhh.googledrivehelper.query.QueryAllFoldersTask;
 import bj4.yhh.googledrivehelper.query.QueryCallback;
+import bj4.yhh.googledrivehelper.query.QueryPhotosTask;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -83,7 +83,7 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
         } else if (!mGoogleDriveWrapper.isDeviceOnline(this)) {
             Log.w(TAG, "No network connection available.");
         } else {
-            new QueryAllFoldersTask(mGoogleDriveWrapper, this).queryTrash(false).execute();
+            new QueryPhotosTask(mGoogleDriveWrapper, this, "change wp").setQueryTrash(false).execute();
         }
     }
 
@@ -213,8 +213,11 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
 
     @Nullable
     @Override
-    public void onQueryResult(Object object) {
-        List<File> files = ((FileList) object).getFiles();
+    public void onQueryResult(FileList fileList) {
+        if (DEBUG) {
+            Log.v(TAG, "onQueryResult done");
+        }
+        List<File> files = fileList.getFiles();
         if (files != null) {
             for (File file : files) {
                 Log.d(TAG, String.format("%s (%s)\n",
