@@ -17,13 +17,5 @@ public class ChangeWpApplication extends Application {
     public void onCreate() {
         super.onCreate();
         WallpaperUtility.scheduleWallpaperTask(this);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            // use boot complete receiver before LOLLIPOP
-            ComponentName receiver = new ComponentName(this, BootCompletedReceiver.class);
-
-            getPackageManager().setComponentEnabledSetting(receiver,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-        }
     }
 }
