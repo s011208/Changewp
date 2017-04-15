@@ -38,25 +38,4 @@ public class QueryPhotosTask extends QueryTask {
             return null;
         }
     }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected void onPostExecute(FileList fileList) {
-        super.onPostExecute(fileList);
-        QueryCallback cb = getCallback().get();
-        if (cb == null) return;
-        cb.onQueryResult(fileList);
-    }
-
-    @Override
-    protected void onCancelled() {
-        QueryCallback cb = getCallback().get();
-        if (cb == null) return;
-        if (getLastException() == null) return;
-        cb.onQueryError(getLastException());
-    }
 }

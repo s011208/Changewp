@@ -23,7 +23,7 @@ public class QueryAllFoldersInParentTask extends QueryTask {
         try {
             List<String> conditions = new ArrayList<>();
             conditions.add("mimeType = 'application/vnd.google-apps.folder'");
-            conditions.add("'" + getDriveFolderId() + "' in parents");
+            conditions.add("'" + DRIVE_FILE_ROOT + "' in parents");
             if (!getQueryTrash()) {
                 conditions.add("trashed = false");
             }
@@ -37,26 +37,5 @@ public class QueryAllFoldersInParentTask extends QueryTask {
             cancel(true);
             return null;
         }
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected void onPostExecute(FileList fileList) {
-        super.onPostExecute(fileList);
-        QueryCallback cb = getCallback().get();
-        if (cb == null) return;
-        cb.onQueryResult(fileList);
-    }
-
-    @Override
-    protected void onCancelled() {
-        QueryCallback cb = getCallback().get();
-        if (cb == null) return;
-        if (getLastException() == null) return;
-        cb.onQueryError(getLastException());
     }
 }

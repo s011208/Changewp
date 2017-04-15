@@ -83,7 +83,10 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
         } else if (!mGoogleDriveWrapper.isDeviceOnline(this)) {
             Log.w(TAG, "No network connection available.");
         } else {
-            new QueryPhotosTask(mGoogleDriveWrapper, this, "change wp").setQueryTrash(false).execute();
+            new QueryPhotosTask(mGoogleDriveWrapper, this, "change wp")
+                    .setDriveFolderId("0BxipNGTIBjveTnNGZkRaczl5MkE")
+                    .setQueryTrash(false)
+                    .execute();
         }
     }
 
@@ -220,8 +223,8 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
         List<File> files = fileList.getFiles();
         if (files != null) {
             for (File file : files) {
-                Log.d(TAG, String.format("%s (%s)\n",
-                        file.getName(), file.getId()));
+                Log.d(TAG, "name: " + file.getName() + ", id: " + file.getId() + ", mime: " + file.getMimeType()
+                        + ", thumbnail: " + file.getThumbnailLink());
             }
         }
     }
