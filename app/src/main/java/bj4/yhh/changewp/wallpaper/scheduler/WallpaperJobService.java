@@ -17,7 +17,7 @@ import bj4.yhh.changewp.wallpaper.ChangeWallpaperService;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class WallpaperJobService extends JobService {
     public static final String JOB_CHANGE_WALLPAPER = "Change-wallpaper";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String TAG = "WallpaperJobService";
 
     @Override

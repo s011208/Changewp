@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,18 +26,19 @@ import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.utilities.Utility;
 import bj4.yhh.googledrivehelper.GoogleDriveWrapper;
-import bj4.yhh.googledrivehelper.QueryAllFoldersTask;
+import bj4.yhh.googledrivehelper.query.QueryAllFoldersTask;
+import bj4.yhh.googledrivehelper.query.QueryCallback;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class GoogleDriveAlbumActivity extends AppCompatActivity implements AlbumView.Callback, QueryAllFoldersTask.Callback {
+public class GoogleDriveAlbumActivity extends AppCompatActivity implements AlbumView.Callback, QueryCallback {
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-    private static final String TAG = "ImageSourceActivity";
+    private static final String TAG = "GoogleDriveAlbum";
     private static final boolean DEBUG = true;
     private static final String PREF_ACCOUNT_NAME = "pref_accountName";
 
@@ -51,21 +51,21 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setContentView(R.layout.activity_main);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         mExternalStorageImageDataMap.clear();
         mExternalStorageImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(GoogleDriveAlbumActivity.this)));
 
 //        mAlbumView = (AlbumView) findViewById(R.id.album_view);
-        mAlbumView.setEnableSpan(true)
-                .setEnableGridMargin(true)
-                .setSpanSize(2)
-                .buildAlbumView();
+//        mAlbumView.setEnableSpan(true)
+//                .setEnableGridMargin(true)
+//                .setSpanSize(2)
+//                .buildAlbumView();
 
-        mAlbumView.setImageDataList(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
-        mAlbumView.setCallback(this);
+//        mAlbumView.setImageDataList(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
+//        mAlbumView.setCallback(this);
 
         initGoogleAccountCredential();
     }
@@ -192,7 +192,7 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
     }
 
     @Override
-    public void onError(Exception error) {
+    public void onQueryError(Exception error) {
         if (error != null) {
             if (error instanceof GooglePlayServicesAvailabilityIOException) {
                 mGoogleDriveWrapper.showGooglePlayServicesAvailabilityErrorDialog(
@@ -213,8 +213,8 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
 
     @Nullable
     @Override
-    public void onResult(FileList fileList) {
-        List<File> files = fileList.getFiles();
+    public void onQueryResult(Object object) {
+        List<File> files = ((FileList) object).getFiles();
         if (files != null) {
             for (File file : files) {
                 Log.d(TAG, String.format("%s (%s)\n",

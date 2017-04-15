@@ -25,9 +25,8 @@ public class ChangeWallpaperService extends IntentService {
     public static final String EXTRA_FROM_JOB_SCHEDULER = "extra_from";
     public static final int FROM_UNKNOWN = -1;
     public static final int FROM_JOB_SCHEDULER = 1000;
-    public static final int FROM_ALARM_MANAGER = 1001;
     private static final String TAG = "ChangeWallpaperService";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public ChangeWallpaperService() {
         super(ChangeWallpaperService.class.getName());

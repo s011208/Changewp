@@ -1,7 +1,6 @@
-package bj4.yhh.googledrivehelper;
+package bj4.yhh.googledrivehelper.query;
 
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.HttpTransport;
@@ -14,6 +13,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import bj4.yhh.googledrivehelper.GoogleDriveWrapper;
+import bj4.yhh.googledrivehelper.QUtility;
+
 /**
  * Created by s011208 on 2017/4/4.
  */
@@ -25,14 +27,14 @@ public class QueryAllFoldersTask extends AsyncTask<Void, Void, FileList> {
     private Drive mDriveService;
     private Exception mLastError = null;
     private WeakReference<GoogleDriveWrapper> mGoogleDriveWrapper;
-    private WeakReference<Callback> mCallback;
+    private WeakReference<QueryCallback> mCallback;
     private boolean mIncludeTrash = false;
 
-    public QueryAllFoldersTask(GoogleDriveWrapper wrapper, Callback cb) {
+    public QueryAllFoldersTask(GoogleDriveWrapper wrapper, QueryCallback cb) {
         this(wrapper, cb, "Change wp");
     }
 
-    public QueryAllFoldersTask(GoogleDriveWrapper wrapper, Callback cb, String applicationNAme) {
+    public QueryAllFoldersTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
         mCallback = new WeakReference<>(cb);
         mGoogleDriveWrapper = new WeakReference<>(wrapper);
 
@@ -42,11 +44,6 @@ public class QueryAllFoldersTask extends AsyncTask<Void, Void, FileList> {
                 transport, jsonFactory, mGoogleDriveWrapper.get().getCredential())
                 .setApplicationName(applicationNAme)
                 .build();
-    }
-
-    public QueryAllFoldersTask setDriveFolderId(String folderId) {
-        mDriveFolderId = folderId;
-        return this;
     }
 
     public QueryAllFoldersTask queryTrash(boolean includeTrash) {
@@ -59,7 +56,6 @@ public class QueryAllFoldersTask extends AsyncTask<Void, Void, FileList> {
         try {
             List<String> conditions = new ArrayList<>();
             conditions.add("mimeType = 'application/vnd.google-apps.folder'");
-            conditions.add("'" + mDriveFolderId + "' in parents");
             if (!mIncludeTrash) {
                 conditions.add("trashed = false");
             }
@@ -83,23 +79,16 @@ public class QueryAllFoldersTask extends AsyncTask<Void, Void, FileList> {
     @Override
     protected void onPostExecute(FileList fileList) {
         super.onPostExecute(fileList);
-        Callback cb = mCallback.get();
+        QueryCallback cb = mCallback.get();
         if (cb == null) return;
-        cb.onResult(fileList);
+        cb.onQueryResult(fileList);
     }
 
     @Override
     protected void onCancelled() {
-        Callback cb = mCallback.get();
+        QueryCallback cb = mCallback.get();
         if (cb == null) return;
         if (mLastError == null) return;
-        cb.onError(mLastError);
-    }
-
-    public interface Callback {
-        void onError(Exception e);
-
-        @Nullable
-        void onResult(FileList fileList);
+        cb.onQueryError(mLastError);
     }
 }
