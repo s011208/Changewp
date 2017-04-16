@@ -12,9 +12,9 @@ import bj4.yhh.googledrivehelper.QUtility;
  * Created by s011208 on 2017/4/4.
  */
 
-public class QueryAllFoldersInParentTask extends QueryTask {
+public class GoogleDriveAllFoldersInParentTask extends GoogleDriveTask {
 
-    public QueryAllFoldersInParentTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
+    public GoogleDriveAllFoldersInParentTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
         super(wrapper, cb, applicationNAme);
     }
 

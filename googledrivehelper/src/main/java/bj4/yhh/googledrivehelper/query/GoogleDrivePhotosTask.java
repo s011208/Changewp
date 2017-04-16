@@ -12,9 +12,9 @@ import bj4.yhh.googledrivehelper.QUtility;
  * Created by s011208 on 2017/4/4.
  */
 
-public class QueryAllFoldersTask extends QueryTask {
+public class GoogleDrivePhotosTask extends GoogleDriveTask {
 
-    public QueryAllFoldersTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
+    public GoogleDrivePhotosTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
         super(wrapper, cb, applicationNAme);
     }
 
@@ -22,7 +22,8 @@ public class QueryAllFoldersTask extends QueryTask {
     protected FileList doInBackground(Void... voids) {
         try {
             List<String> conditions = new ArrayList<>();
-            conditions.add("mimeType = 'application/vnd.google-apps.folder'");
+            conditions.add("mimeType contains 'image/'");
+            conditions.add("'" + getDriveFolderId() + "' in parents");
             if (!getQueryTrash()) {
                 conditions.add("trashed = false");
             }

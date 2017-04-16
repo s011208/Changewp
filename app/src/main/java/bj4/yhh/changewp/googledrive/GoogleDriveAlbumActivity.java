@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,8 +27,8 @@ import bj4.yhh.albumview.ImageData;
 import bj4.yhh.changewp.R;
 import bj4.yhh.changewp.utilities.Utility;
 import bj4.yhh.googledrivehelper.GoogleDriveWrapper;
+import bj4.yhh.googledrivehelper.query.GoogleDriveAllFoldersTask;
 import bj4.yhh.googledrivehelper.query.QueryCallback;
-import bj4.yhh.googledrivehelper.query.QueryPhotosTask;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -37,35 +38,31 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-
     private static final String TAG = "GoogleDriveAlbum";
     private static final boolean DEBUG = true;
     private static final String PREF_ACCOUNT_NAME = "pref_accountName";
-
-
     private AlbumView mAlbumView;
-    private Map<String, List<ImageData>> mExternalStorageImageDataMap = new HashMap<>();
+    private Map<String, List<ImageData>> mGoogleDriveImageDataMap = new HashMap<>();
 
     private GoogleDriveWrapper mGoogleDriveWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_google_drive);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        mExternalStorageImageDataMap.clear();
-        mExternalStorageImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(GoogleDriveAlbumActivity.this)));
+        mGoogleDriveImageDataMap.clear();
+        mGoogleDriveImageDataMap.putAll(Utility.groupImageDataByFolder(Utility.getAllExternalStorageImageData(GoogleDriveAlbumActivity.this)));
 
-//        mAlbumView = (AlbumView) findViewById(R.id.album_view);
-//        mAlbumView.setEnableSpan(true)
-//                .setEnableGridMargin(true)
-//                .setSpanSize(2)
-//                .buildAlbumView();
+        mAlbumView = (AlbumView) findViewById(R.id.album_view);
+        mAlbumView.setEnableSpan(true)
+                .setEnableGridMargin(true)
+                .setSpanSize(2)
+                .buildAlbumView();
 
-//        mAlbumView.setImageDataList(Utility.getFirstImageDataFromGroup(mExternalStorageImageDataMap));
-//        mAlbumView.setCallback(this);
+        mAlbumView.setCallback(this);
 
         initGoogleAccountCredential();
     }
@@ -83,8 +80,7 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
         } else if (!mGoogleDriveWrapper.isDeviceOnline(this)) {
             Log.w(TAG, "No network connection available.");
         } else {
-            new QueryPhotosTask(mGoogleDriveWrapper, this, "change wp")
-                    .setDriveFolderId("0BxipNGTIBjveTnNGZkRaczl5MkE")
+            new GoogleDriveAllFoldersTask(mGoogleDriveWrapper, this, "change wp")
                     .setQueryTrash(false)
                     .execute();
         }
@@ -196,6 +192,9 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
 
     @Override
     public void onQueryError(Exception error) {
+        if (DEBUG) {
+            Log.v(TAG, "onQueryError");
+        }
         if (error != null) {
             if (error instanceof GooglePlayServicesAvailabilityIOException) {
                 mGoogleDriveWrapper.showGooglePlayServicesAvailabilityErrorDialog(
@@ -218,7 +217,7 @@ public class GoogleDriveAlbumActivity extends AppCompatActivity implements Album
     @Override
     public void onQueryResult(FileList fileList) {
         if (DEBUG) {
-            Log.v(TAG, "onQueryResult done");
+            Log.v(TAG, "onQueryResult");
         }
         List<File> files = fileList.getFiles();
         if (files != null) {

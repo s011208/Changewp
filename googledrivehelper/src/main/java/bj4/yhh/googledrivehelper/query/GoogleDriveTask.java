@@ -17,7 +17,7 @@ import bj4.yhh.googledrivehelper.GoogleDriveWrapper;
  * Created by s011208 on 2017/4/4.
  */
 
-public abstract class QueryTask extends AsyncTask<Void, Void, FileList> {
+public abstract class GoogleDriveTask extends AsyncTask<Void, Void, FileList> {
     public static final String DRIVE_FILE_ROOT = "root";
 
     private Drive mDriveService;
@@ -27,7 +27,7 @@ public abstract class QueryTask extends AsyncTask<Void, Void, FileList> {
     private WeakReference<QueryCallback> mCallback;
     private boolean mIncludeTrash = false;
 
-    public QueryTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
+    public GoogleDriveTask(GoogleDriveWrapper wrapper, QueryCallback cb, String applicationNAme) {
         mCallback = new WeakReference<>(cb);
         mGoogleDriveWrapper = new WeakReference<>(wrapper);
 
@@ -55,7 +55,7 @@ public abstract class QueryTask extends AsyncTask<Void, Void, FileList> {
         return mDriveService;
     }
 
-    public QueryTask setQueryTrash(boolean includeTrash) {
+    public GoogleDriveTask setQueryTrash(boolean includeTrash) {
         mIncludeTrash = includeTrash;
         return this;
     }
@@ -64,7 +64,7 @@ public abstract class QueryTask extends AsyncTask<Void, Void, FileList> {
         return mIncludeTrash;
     }
 
-    public QueryTask setDriveFolderId(String id) {
+    public GoogleDriveTask setDriveFolderId(String id) {
         mDriveFolderId = id;
         return this;
     }
